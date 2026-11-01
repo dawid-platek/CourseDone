@@ -1,0 +1,34 @@
+@page "{id:int}"
+@model CourseDone.Web.Pages.Courses.DetailsModel
+@{ ViewData["Title"] = Model.Course.Title; }
+<a asp-page="/Index">← Kursy</a>
+<h1 class="h3 mt-2">@Model.Course.Title</h1>
+<p class="text-muted">@Model.Course.Provider
+    @if (!string.IsNullOrEmpty(Model.Course.Url)) { <a href="@Model.Course.Url" target="_blank" rel="noopener">Otwórz kurs</a> }</p>
+<div class="progress mb-1" style="height:1rem"><div class="progress-bar" style="width:@Model.Course.ProgressPercent%"></div></div>
+<small class="text-muted">@Model.Course.DoneLessons / @Model.Course.TotalLessons · @Model.Course.ProgressPercent%</small>
+
+<ul class="list-group my-3">
+@foreach (var l in Model.Course.Lessons.OrderBy(l => l.Order))
+{
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        <form method="post" asp-page-handler="Toggle" asp-route-id="@Model.Course.Id" asp-route-lessonId="@l.Id" class="m-0">
+            <button class="btn btn-sm @(l.IsDone ? "btn-success" : "btn-outline-secondary")">@(l.IsDone ? "✔" : "○")</button>
+            <span class="ms-2 @(l.IsDone ? "text-decoration-line-through text-muted" : "")">@l.Title</span>
+        </form>
+        <form method="post" asp-page-handler="DeleteLesson" asp-route-id="@Model.Course.Id" asp-route-lessonId="@l.Id" class="m-0">
+            <button class="btn btn-sm btn-link text-danger">usuń</button>
+        </form>
+    </li>
+}
+</ul>
+
+<form method="post" asp-page-handler="AddLesson" asp-route-id="@Model.Course.Id" class="input-group mb-4">
+    <input name="lessonTitle" class="form-control" placeholder="Nowa lekcja / moduł" required maxlength="200" />
+    <button class="btn btn-primary">Dodaj</button>
+</form>
+
+<form method="post" asp-page-handler="DeleteCourse" asp-route-id="@Model.Course.Id"
+      onsubmit="return confirm('Usunąć kurs wraz z lekcjami?')">
+    <button class="btn btn-outline-danger btn-sm">Usuń kurs</button>
+</form>

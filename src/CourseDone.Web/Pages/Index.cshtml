@@ -1,0 +1,27 @@
+@page
+@model IndexModel
+@{ ViewData["Title"] = "Moje kursy"; }
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 m-0">Moje kursy</h1>
+    <a class="btn btn-primary" asp-page="/Courses/Create">+ Nowy kurs</a>
+</div>
+
+@if (Model.Courses.Count == 0)
+{
+    <p class="text-muted">Brak kursów. Dodaj pierwszy.</p>
+}
+@foreach (var c in Model.Courses)
+{
+    <div class="card mb-2"><div class="card-body">
+        <div class="d-flex justify-content-between">
+            <a asp-page="/Courses/Details" asp-route-id="@c.Id" class="fw-bold">@c.Title</a>
+            <span class="text-muted small">@c.Provider</span>
+        </div>
+        <div class="progress my-2" style="height:.8rem">
+            <div class="progress-bar @(c.Status == CourseDone.Web.Domain.CourseStatus.Completed ? "bg-success" : "")"
+                 style="width:@c.ProgressPercent%"></div>
+        </div>
+        <small class="text-muted">@c.DoneLessons / @c.TotalLessons lekcji · @c.ProgressPercent%</small>
+    </div></div>
+}

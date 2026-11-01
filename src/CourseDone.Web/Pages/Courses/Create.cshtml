@@ -1,0 +1,15 @@
+@page
+@model CourseDone.Web.Pages.Courses.CreateModel
+@{ ViewData["Title"] = "Nowy kurs"; }
+<h1 class="h3">Nowy kurs</h1>
+<form method="post" class="col-md-6">
+    <div class="mb-3"><label class="form-label">Tytuł</label>
+        <input asp-for="Title" class="form-control" required maxlength="200" />
+        <span asp-validation-for="Title" class="text-danger"></span></div>
+    <div class="mb-3"><label class="form-label">Platforma (np. Udemy)</label>
+        <input asp-for="Provider" class="form-control" maxlength="100" /></div>
+    <div class="mb-3"><label class="form-label">Link</label>
+        <input asp-for="CourseUrl" class="form-control" type="url" /></div>
+    <button class="btn btn-primary">Zapisz</button>
+    <a class="btn btn-link" asp-page="/Index">Anuluj</a>
+</form>
