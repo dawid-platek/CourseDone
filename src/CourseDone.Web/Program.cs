@@ -19,7 +19,17 @@ using (var scope = app.Services.CreateScope())
 if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Error");
 
-app.UseStaticFiles();
+var types = new Microsoft.AspNetCore.StaticFiles.FileExtensionContentTypeProvider();
+types.Mappings[".webmanifest"] = "application/manifest+json";
+app.UseStaticFiles(new StaticFileOptions
+{
+    ContentTypeProvider = types,
+    // SW musi być zawsze świeży, inaczej aktualizacje PWA utkną w cache przeglądarki.
+    OnPrepareResponse = ctx =>
+    {
+        if (ctx.File.Name == "sw.js") ctx.Context.Response.Headers.CacheControl = "no-cache";
+    }
+});
 app.UseRouting();
 app.MapRazorPages();
 // Manifest dla przyszłego launchera ekosystemu.

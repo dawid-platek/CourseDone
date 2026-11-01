@@ -13,3 +13,11 @@ Aplikacja do śledzenia postępów w kursach. Pierwsza aplikacja w osobistym eko
 - `src/CourseDone.Web` – ta aplikacja. Kolejne aplikacje dodawaj jako `src/<Nazwa>.Web` i referuj `Eco.Shared`.
 - `/.well-known/eco-app` – manifest, z którego przyszły launcher zbuduje menu.
 - Każdy rekord ma `UserId`, więc dodanie wspólnego logowania nie wymaga migracji modelu.
+
+## PWA
+Manifest (`wwwroot/manifest.webmanifest`), service worker (`wwwroot/sw.js`), ikony i strona offline.
+Strony: sieć najpierw, a bez sieci ostatnia kopia lub `offline.html`. Zasoby statyczne z cache.
+Zapisy (POST) zawsze idą do sieci; offline tylko do odczytu.
+Service worker i instalacja na iPhonie wymagają HTTPS (poza `localhost`).
+iPhone: Safari → Udostępnij → „Dodaj do ekranu początkowego”.
+Po zmianie plików statycznych podbij `VERSION` w `sw.js`.
